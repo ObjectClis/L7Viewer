@@ -10,17 +10,32 @@ import { zh_CN } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 
+
+import { DemoNgZorroAntdModule } from './ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+import { MainMapComponent } from './main-map/main-map.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { PropertiesPopupComponent } from './components/properties-popup/properties-popup.component';
+
+
 registerLocaleData(zh);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainMapComponent,
+    MainLayoutComponent,
+    PropertiesPopupComponent
+    
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DemoNgZorroAntdModule,
+    NzIconModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
   bootstrap: [AppComponent]

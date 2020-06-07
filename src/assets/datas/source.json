@@ -1,0 +1,29 @@
+{
+    "layerSources": {
+
+        "1矿山": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A1%E7%9F%BF%E5%B1%B1_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        },
+        "2港口": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A2%E6%B8%AF%E5%8F%A3_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        },
+        "3能源": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A3%E8%83%BD%E6%BA%90_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        },
+        "4铁路": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A4%E9%93%81%E8%B7%AF_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        },
+        "5机场": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A5%E6%9C%BA%E5%9C%BA_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        },
+        "6园区": {
+            "1基本信息": "http://49.233.17.117:8080/geoserver/ydylServer/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ydylServer%3A6%E5%9B%AD%E5%8C%BA_1%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF&maxFeatures=50&outputFormat=application%2Fjson"
+        }
+    },
+    "common": {
+        "一带一路": {
+            "海上路线": "https://gw.alipayobjects.com/os/rmsportal/kwUdcXnxQtexeGRvTGtA.json",
+            "陆上路线": "https://gw.alipayobjects.com/os/rmsportal/dzpMOiLYBKxpdmsgBLoE.json"
+        }
+    }
+}
