@@ -14,14 +14,14 @@ export class LayerServiceService {
   layersControl: Layers; // 图层控制器控件
   overlayers: object; // 图层控制器列表
 
-
   constructor(scene: Scene) {
     this.scene = scene;
-
-
   }
 
   loadDefaultLayers(index) {
+    /**
+     * 加载默认进入图层
+     */
     console.log('加载首页默认图层');
     this.addLayerByUrl(this.globalLayerSet['layerSources']['1矿山']['1基本信息']);
     this.addLayerByUrl(this.globalLayerSet['layerSources']['2港口']['1基本信息']);
@@ -36,11 +36,17 @@ export class LayerServiceService {
   }
 
   loadYDYLLayers(index) {
+    /**
+     * 加载一带一路底图数据
+     */
     this.addLayerByUrl(this.globalLayerSet['common']['一带一路']['海上路线']);
     this.addLayerByUrl(this.globalLayerSet['common']['一带一路']['陆上路线']);
   }
 
-  addLayerByUrl(url) {
+  addLayerByUrl(url, isAddInControl = true) {
+    /**
+     * 通过URL加载图层（数据格式：GeoJson）
+     */
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -99,6 +105,17 @@ export class LayerServiceService {
               }
 
               pointLayer.on('mousemove', this.LayerMouseOver);
+
+              this.overlayers={
+                图层:pointLayer
+              }
+
+              this.layersControl=new Layers({
+                overlayers:this.overlayers
+              })
+
+              this.scene.addControl(this.layersControl);
+
               this.scene.addLayer(pointLayer);
               break;
             case 'LineString':
@@ -124,6 +141,9 @@ export class LayerServiceService {
 
 
   LayerMouseOver = e => {
+    /**
+     * 光标经过要素的事件
+     */
     const properties = e.feature.properties;
     var table = document.createElement('table');
 

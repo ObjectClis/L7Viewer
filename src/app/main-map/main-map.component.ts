@@ -36,7 +36,7 @@ export class MainMapComponent implements OnInit {
       map: new Mapbox({})
     });
     this.scene.setPitch(60); // 设定俯仰角要在setZoomAndCenter之前
-    this.scene.setZoomAndCenter(3, [53, 14]);
+    this.scene.setZoomAndCenter(3.5, [53, 14]);
     this.scene.setMapStyle('dark');
 
 
