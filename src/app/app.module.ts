@@ -16,7 +16,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { MainMapComponent } from './main-map/main-map.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { PropertiesPopupComponent } from './components/properties-popup/properties-popup.component';
+import { SiderItemComponent } from './components/sider-item/sider-item.component';
+import { SiderMenuComponent } from './components/sider-menu/sider-menu.component';
+import { MenuTreeComponent } from './components/menu-tree/menu-tree.component';
 
 
 registerLocaleData(zh);
@@ -26,8 +28,10 @@ registerLocaleData(zh);
     AppComponent,
     MainMapComponent,
     MainLayoutComponent,
-    PropertiesPopupComponent
-    
+    SiderItemComponent,
+    SiderMenuComponent,
+    MenuTreeComponent,
+
   ],
   imports: [
     BrowserModule,

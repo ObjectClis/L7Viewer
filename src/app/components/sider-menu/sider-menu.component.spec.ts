@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertiesPopupComponent } from './properties-popup.component';
+import { SiderMenuComponent } from './sider-menu.component';
 
-describe('PropertiesPopupComponent', () => {
-  let component: PropertiesPopupComponent;
-  let fixture: ComponentFixture<PropertiesPopupComponent>;
+describe('SiderMenuComponent', () => {
+  let component: SiderMenuComponent;
+  let fixture: ComponentFixture<SiderMenuComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PropertiesPopupComponent ]
+      declarations: [ SiderMenuComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PropertiesPopupComponent);
+    fixture = TestBed.createComponent(SiderMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

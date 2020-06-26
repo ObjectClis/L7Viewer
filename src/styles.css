@@ -8,3 +8,16 @@ body {
 .l7-marker-container {
     cursor: default;
 }
+
+.ant-layout-sider-children {
+    /* 左侧主菜单能显示竖直滚动条添加样式 */
+    position: absolute;
+    overflow: auto;
+    width: 100%;
+}
+
+
+/* ::ng-deep .ant-tree .ant-tree-treenode-disabled .ant-tree-node-content-wrapper {
+    color: rgba(0, 255, 0, 1);
+    cursor: not-allowed
+} */

@@ -137,34 +137,6 @@
         }
 
     },
-    "other":{
-        "遥感专区":{
-            "夜光遥感":{
-                "title": "海上丝绸之路",
-                "url": "https://gw.alipayobjects.com/os/rmsportal/kwUdcXnxQtexeGRvTGtA.json",
-                "dataFormat": "json",
-                "type": "line",
-                "show": "2d",
-                "shape": "line",
-                "size": {
-                    "width": 1,
-                    "height": 0
-
-                },
-                "animate": {
-                    "enable": true,
-                    "interval": 0.3,
-                    "trailLength": 1.3,
-                    "duration": 5
-                },
-                "color": "#00BFFF",
-                "opacity": 0.5,
-                "control": false,
-                "mousemovePop": false,
-                "active": true
-            }
-        }
-    },
     "common": {
         "一带一路": {
             "海上路线": {
@@ -216,8 +188,11 @@
                 "active": true
             }
 
-        },
-        "其他": {
+        }
+        
+    },
+    "test":{
+        "测试": {
             "夜光遥感": {
                 "title": "夜光遥感图",
                 "url": "https://gw.alipayobjects.com/zos/antvdemo/assets/light_clip/lightF182013.tiff",

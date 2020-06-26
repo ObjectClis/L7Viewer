@@ -1,28 +1,16 @@
 <nz-layout class="layout">
-    <nz-sider nzCollapsible nzBreakpoint="xs" [nzCollapsedWidth]="0">
+    <nz-sider nzCollapsible nzBreakpoint="0" [nzCollapsedWidth]="0">
         <div class="logo"></div>
-        <ul nz-menu nzTheme="dark" nzMode="inline">
-            <li nz-menu-item>
-                <i nz-icon nzType="user"></i>
-                <span>工程专区</span>
-            </li>
-            <li nz-menu-item>
-                <i nz-icon nzType="video-camera"></i>
-                <span>nav 2</span>
-            </li>
-            <li nz-menu-item>
-                <i nz-icon nzType="upload"></i>
-                <span>nav 3</span>
-            </li>
-            <li nz-menu-item>
-                <i nz-icon nzType="user"></i>
-                <span>nav 4</span>
-            </li>
-        </ul>
+        <app-menu-tree [globalLService]="this.globalLService"></app-menu-tree>
+        <!-- <app-menu-tree [scene]=></app-menu-tree> -->
+
     </nz-sider>
     <nz-layout>
         <h1 class="title">境外重大工程展示系统</h1>
-        <app-main-map></app-main-map>
+        <!-- <div style="text-align:left">
+            <div id="map"></div>
+        </div> -->
+        <app-main-map (globalLService)="changeGlobalLService($event)"></app-main-map>
         <!-- <nz-header></nz-header>
     <nz-content>
       <div class="inner-content">

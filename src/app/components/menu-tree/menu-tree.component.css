@@ -1,0 +1,13 @@
+nz-tree {
+    background-color: #000C17;
+    color: white;
+}
+
+::ng-deep .ant-tree .ant-tree-treenode-disabled .ant-tree-node-content-wrapper {
+    color: #888888;
+    cursor: not-allowed
+}
+
+::ng-deep .ant-tree .ant-tree-treenode {
+    padding: 7px 0 7px 0;
+}
