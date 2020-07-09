@@ -1,0 +1,24 @@
+<nz-layout class="layout">
+    <nz-sider nzCollapsible nzBreakpoint="0" [nzCollapsedWidth]="0">
+        <div class="logo"></div>
+        <app-menu-tree [globalLService]="this.globalLService"></app-menu-tree>
+        <!-- <app-menu-tree [scene]=></app-menu-tree> -->
+
+    </nz-sider>
+    <nz-layout>
+        <h1 class="title">境外重大工程展示系统</h1>
+        <!-- <div style="text-align:left">
+            <div id="map"></div>
+        </div> -->
+        <app-main-map (globalLService)="changeGlobalLService($event)"></app-main-map>
+        <!-- <nz-header></nz-header>
+    <nz-content>
+      <div class="inner-content">
+
+
+     
+      </div>
+    </nz-content>
+    <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer> -->
+    </nz-layout>
+</nz-layout>
