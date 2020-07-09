@@ -1,7 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Scene, PointLayer, RasterLayer, LineLayer, Popup, Layers } from "@antv/l7";
+import { Scene, PointLayer, RasterLayer, LineLayer, Popup, Layers, BaseLayer } from "@antv/l7";
 import { GaodeMap, Mapbox } from "@antv/l7-maps"
 import * as GeoTIFF from 'geotiff';
+
+import { MainMapComponent } from '../main-map/main-map.component';
 
 // import * from "./../"
 
@@ -17,146 +19,23 @@ export class LayerService {
   layersControl: Layers; // 图层控制器控件
   overlayers: object = {}; // 图层控制器列表
 
+  mapContainer;
+
+  
+
   // constructor(scene: Scene) {
   //   this.scene = scene;
   // }
 
   constructor() { }
 
-  init(scene: Scene) {
+  init(scene: Scene, container) {
     this.scene = scene;
-  }
-
-  loadDefaultLayers(index) {
-    /**
-     * 加载默认进入图层
-     */
-    console.log('加载首页默认图层');
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['1矿山']['1基本信息']);
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['2港口']['1基本信息']);
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['3能源']['1基本信息']);
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['4铁路']['1基本信息']);
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['5机场']['1基本信息']);
-    this.addLayerByFormatObj(this.globalLayerSet['layerSources']['6园区']['1基本信息']);
-
-    // this.addLayerByUrl(this.layerSources);
-
-
-  }
-
-  loadYDYLLayers(index) {
-    /**
-     * 加载一带一路底图数据
-     */
-    this.addLayerByFormatObj(this.globalLayerSet['common']['一带一路']['海上路线']);
-    this.addLayerByFormatObj(this.globalLayerSet['common']['一带一路']['陆上路线']);
-
+    this.mapContainer = container;
+    this.mapContainer.drawerVisible=true;
   }
 
 
-  loadTestLayers(index) {
-    /**
-     * 加载一带一路底图数据
-     */
-    this.addLayerByFormatObj(this.globalLayerSet['test']['测试']['夜光遥感']);
-
-  }
-
-
-
-  addLayerByUrl(url, isAddInControl = true) {
-    /**
-     * 通过URL加载图层（数据格式：GeoJson）
-     */
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        console.log('dsds');
-        const features = data.features
-        if (features.length > 0) {
-          switch (features[0].geometry.type) {
-            case 'Point':
-              const pointLayer = new PointLayer({});
-              pointLayer.source(data)
-                .shape('circle')
-                // // .size('id', [ 5, 20 ])
-                // .color('mineral', mineral => {
-                //   return mineral == '铜矿' ? '#5B8FF9' : '#5CCEA1';
-                // })
-                .color('class', cls => {
-                  switch (cls.replace(/^\s+|\s+$/g, "")) { // 去掉空格
-                    case '矿山项目':
-                      return '#996633';
-                      break;
-                    case '港口项目':
-                      return '#3366FF';
-                      break;
-                    case '能源项目':
-                      return '#33FF33';
-                      break;
-                    case '铁路项目':
-                      return '#99CCCC';
-                      break;
-                    case '机场项目':
-                      return '#9933FF';
-                      break;
-                    case '园区项目':
-                      return '#CC0000';
-                      break;
-                    default:
-                      return '#ffffff';
-                      break;
-                  }
-                })
-                .active(true)
-                .style({
-                  opacity: 0.3,
-                  strokeWidth: 1
-                });
-
-              if (features[0].properties['class'].replace(/^\s+|\s+$/g, "") == '能源项目') {
-                pointLayer.shape('cylinder')
-                  .size('capacity', function (capacity) {
-                    return [4, 4, capacity * 10];
-                  })
-                  .style({
-                    opacity: 1,
-                    strokeWidth: 1
-                  });
-              }
-
-              pointLayer.on('mousemove', this.LayerMouseOver);
-
-              this.overlayers = {
-                图层: pointLayer
-              }
-
-              this.layersControl = new Layers({
-                overlayers: this.overlayers
-              })
-
-              this.scene.addControl(this.layersControl);
-
-              this.scene.addLayer(pointLayer);
-              break;
-            case 'LineString':
-              const lineLayer = new LineLayer({});
-              lineLayer.source(data)
-                .size(0.3)
-                // .color('#00BFFF') // 蓝色
-                .color('#ffffff')  // 白色
-                .shape('line');
-              this.scene.addLayer(lineLayer);
-
-
-              break;
-            default:
-              console.log('图层属性未能识别到：' + features[0].geometry.type)
-              break;
-          }
-        }
-      })
-  }
 
   addLayerByFormatObj(obj) {
     /**
@@ -170,7 +49,7 @@ export class LayerService {
         this.AddLineLayer(obj);
         break;
       case 'tiff':
-        // this.AddRasterLayer(obj);
+        this.AddRasterLayer(obj);
         break;
       default:
 
@@ -187,6 +66,7 @@ export class LayerService {
         if (features.length > 0) {
 
           const pointLayer = new PointLayer({});
+          this.SetLayerConfig(pointLayer, obj.config);
           pointLayer.source(data)     // 设定数据源
             .color(obj.color)      // 设定颜色
             .active(obj.active)      // 设定默认激活状态
@@ -231,6 +111,14 @@ export class LayerService {
       })
   }
 
+  SetLayerConfig(layer: BaseLayer, config: Object) {
+    for (const key in config) {
+      if (config.hasOwnProperty(key)) {
+        layer[key] = config[key];
+      }
+    }
+  }
+
   AddLineLayer(obj) {
     fetch(obj.url)
       .then(res => res.json())
@@ -240,6 +128,9 @@ export class LayerService {
           const lineLayer = new LineLayer({
             blend: 'normal'
           });
+
+          this.SetLayerConfig(lineLayer, obj.config);
+
           lineLayer.source(data)     // 设定数据源
             .color(obj.color)      // 设定颜色
             .active(obj.active)      // 设定默认激活状态
@@ -288,97 +179,81 @@ export class LayerService {
               overlayers: this.overlayers
             })
             this.scene.addControl(this.layersControl);
+
+            if (obj.control) {      // 设定是否受到图层列表控件控制
+              this.overlayers[obj.title] = lineLayer;
+              if (this.scene.getControlByName("layersCtrl")) {
+                this.scene.removeControl(this.scene.getControlByName("layersCtrl"));
+              }
+
+              this.layersControl = new Layers({
+                name: "layersCtrl",
+                overlayers: this.overlayers
+              })
+              this.scene.addControl(this.layersControl);
+            }
           }
 
         }
       })
   }
 
-  // async AddRasterLayer(obj) {
-
-  //   const tiffdata = await this.getTiffData();
-
-  //   const layer = new RasterLayer({});
-  //   layer
-  //     .source(tiffdata.data, {
-  //       parser: {
-  //         type: 'raster',
-  //         width: tiffdata.width,
-  //         height: tiffdata.height,
-  //         extent: [73.4821902409999979, 3.8150178409999995, 135.1066187319999869, 57.6300459959999998]
-  //       }
-  //     })
-  //     .style({
-  //       opacity: 1.0,
-  //       clampLow: false,
-  //       clampHigh: false,
-  //       domain: [0, 90],
-  //       nodataValue: 0,
-  //       rampColors: {
-  //         colors: ['rgba(92,58,16,0)', 'rgba(92,58,16,0)', '#fabd08', '#f1e93f', '#f1ff8f', '#fcfff7'],
-  //         positions: [0, 0.05, 0.1, 0.25, 0.5, 1.0]
-  //       }
-  //     });
-
-  //   this.scene.addLayer(layer);
-
-
-
-  // }
-
-  async AddRasterLayer(obj) {
-
-    // const tiff = await GeoTIFF.fromUrl('https://gw.alipayobjects.com/zos/antvdemo/assets/light_clip/lightF182013.tiff');
-
-    // // using local ArrayBuffer
-    // const response = await fetch('https://gw.alipayobjects.com/zos/antvdemo/assets/light_clip/lightF182013.tiff');
-    // const arrayBuffer = await response.arrayBuffer();
-    // const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-
-    const response = await fetch(
-      'https://gw.alipayobjects.com/zos/antvdemo/assets/light_clip/lightF182013.tiff'
-    );
+  async getTiffData(url) {
+    const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
-    // const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-
-    console.log('tiff');
-
-
-    // fetch(obj.url)
-    // .then(res => {
-    //   // const sss=res.arrayBuffer();
-    //   res.arrayBuffer().then(
-    //     bbb=>{
-    //       const s='dsds';
-    //       console.log('tiff1');
-    //     }
-    //   )
-    //   console.log('tiff2');
-    // })
-    // .then(data => {
-
-    // })
+    const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
+    const image = await tiff.getImage();
+    const width = image.getWidth();
+    const height = image.getHeight();
+    const values = await image.readRasters();
+    return {
+      data: values[0],
+      width,
+      height
+    };
   }
 
+  async AddRasterLayer(obj) {
+    const tiffdata = await this.getTiffData(obj.url);
 
 
+    const tiffLayer = new RasterLayer({});
+    this.SetLayerConfig(tiffLayer, obj.config);
+    tiffLayer.source(tiffdata.data, {
+      parser: {
+        type: 'raster',
+        width: tiffdata.width,
+        height: tiffdata.height,
+        extent: obj.extent
+      }
+    })
+      .style({
+        opacity: obj.opacity,
+        clampLow: obj.clampLow,
+        clampHigh: obj.clampHigh,
+        domain: obj.domain,
+        nodataValue: obj.noDataValue,
+        rampColors: {
+          colors: obj.rampColors.colors,
+          positions: obj.rampColors.positions
+        }
+      });
 
-  //  async getTiffData() {
-  //   const response = await fetch(
-  //     'https://gw.alipayobjects.com/zos/antvdemo/assets/light_clip/lightF182013.tiff'
-  //   );
-  //   const arrayBuffer = await response.arrayBuffer();
-  //   const tiff = await GeoTIFF.fromArrayBuffer(arrayBuffer);
-  //   const image = await tiff.getImage();
-  //   const width = image.getWidth();
-  //   const height = image.getHeight();
-  //   const values = await image.readRasters();
-  //   return {
-  //     data: values[0],
-  //     width,
-  //     height
-  //   };
-  // }
+    this.scene.addLayer(tiffLayer);
+
+    if (obj.control) {      // 设定是否受到图层列表控件控制
+      this.overlayers[obj.title] = tiffLayer;
+      if (this.scene.getControlByName("layersCtrl")) {
+        this.scene.removeControl(this.scene.getControlByName("layersCtrl"));
+      }
+
+      this.layersControl = new Layers({
+        name: "layersCtrl",
+        overlayers: this.overlayers
+      })
+      this.scene.addControl(this.layersControl);
+    }
+  }
 
 
   LayerMouseOver = e => {
@@ -386,6 +261,8 @@ export class LayerService {
      * 光标经过要素的事件
      */
     const properties = e.feature.properties;
+    var div = document.createElement('div');
+
     var table = document.createElement('table');
 
     for (const key in properties) {
@@ -401,15 +278,69 @@ export class LayerService {
         table.appendChild(tr);
       }
     }
+
+
+    var a = document.createElement('a');
+    a.innerHTML = "更多";
+
+    a.onclick = () => {
+      let  drawerMsg = {
+        propertiesArr: [
+          { key: '1', value: '测试展示' }
+        ],
+        articleArr:[
+          {key:'1',value:'“一带一路”（The Belt and Road，缩写B&R）是“丝绸之路经济带”和“21世纪海上丝绸之路”的简称，2013年9月和10月由中国国家主席习近平分别提出建设“新丝绸之路经济带”和“21世纪海上丝绸之路”的合作倡议 [1]  。依靠中国与有关国家既有的双多边机制，借助既有的、行之有效的区域合作平台，一带一路旨在借用古代丝绸之路的历史符号，高举和平发展的旗帜，积极发展与沿线国家的经济合作伙伴关系，共同打造政治互信、经济融合、文化包容的利益共同体、命运共同体和责任共同体。'},
+          {key:'2',value:'2015年3月28日，国家发展改革委、外交部、商务部联合发布了《推动共建丝绸之路经济带和21世纪海上丝绸之路的愿景与行动》。'},
+          {key:'3',value:'“一带一路"经济区开放后，承包工程项目突破3000个。2015年，中国企业共对“一带一路”相关的49个国家进行了直接投资，投资额同比增长18.2% [4]  。2015年，中国承接“一带一路”相关国家服务外包合同金额178.3亿美元，执行金额121.5亿美元，同比分别增长42.6%和23.45%。'},
+        ],
+        pictureArr:[
+          {key:'1',url:'http://5b0988e595225.cdn.sohucs.com/images/20171128/5ad31c4a4ef24dde8e9e7d76938921ea.jpeg',remark:'图片1介绍文字'},
+          {key:'2',url:'http://n.sinaimg.cn/translate/203/w1000h803/20190124/UbyI-hryfqhm6398069.png',remark:'图片2介绍文字'},
+          {key:'3',url:'http://img.mp.sohu.com/upload/20170704/d3fd1cd04c5b4642af8a491082cde1c4_th.png',remark:'图片3介绍文字'}
+        ],
+        videoArr:[
+          {key:'1',url:'https://www.w3school.com.cn/i/movie.ogg',remark:'视频1介绍文字'},
+          {key:'2',url:'https://www.w3school.com.cn/i/movie.ogg',remark:'视频2介绍文字'},
+        ]
+    
+      };
+
+      for (const key in e.feature.properties) {
+        if (e.feature.properties.hasOwnProperty(key)) {
+          const element = e.feature.properties[key];
+          drawerMsg.propertiesArr.push(
+            {key:key,value:element}
+          )
+
+          
+          
+        }
+      }
+
+      this.openMainmapDrawer(drawerMsg);
+    }
+
+
+
+    div.appendChild(table);
+    div.appendChild(a);
+
+
     const popup = new Popup({
       offsets: [0, 0],
       closeButton: false
     })
       .setLnglat(e.lngLat)
-      .setDOMContent(table)
+      .setDOMContent(div)
 
     this.scene.addPopup(popup);
 
+  }
+
+  openMainmapDrawer = (drawerMsg) => {
+    this.mapContainer.drawerMsg = drawerMsg;
+    // this.mapContainer.drawerVisible = true;
+    this.mapContainer.openDrawer();
   }
 
 

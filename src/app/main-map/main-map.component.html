@@ -1,4 +1,53 @@
 <!--The content below is only a placeholder and can be replaced.-->
+
+
 <div style="text-align:left">
     <div id="map"></div>
 </div>
+
+<nz-drawer style="width: auto;" [nzVisible]="drawerVisible" [nzWidth]="640" [nzClosable]="true" [nzMask]="false"
+    [nzMaskClosable]="false" (nzOnClose)="closeDrawer()" >
+
+
+    <nz-descriptions [nzColumn]="2" nzTitle="元素属性">
+        <nz-descriptions-item nzTitle="{{item.key}}" [nzSpan]="1"
+            *ngFor="let item of drawerMsg.propertiesArr;index as i;">{{item.value}}</nz-descriptions-item>
+    </nz-descriptions>
+
+
+
+    <nz-divider></nz-divider>
+    <div class="ant-descriptions-title" style="font-weight:bold;">相关资料</div>
+
+    <div>
+        <p style="text-indent: 2em;" *ngFor="let item of drawerMsg.articleArr;index as i;">{{item.value}}</p>
+    </div>
+
+    <nz-divider></nz-divider>
+    <div class="ant-descriptions-title" style="font-weight:bold;">相关图片</div>
+  
+    <nz-carousel [nzEffect]="effect">
+        <div nz-carousel-content *ngFor="let item of drawerMsg.pictureArr;index as i;">
+            <!-- <h1 style="color: white;">{{item.remark}}</h1> -->
+            <div style="position:absolute; background-color: #0000003b; bottom: 0; color: #ffffff; width: 100%; max-height: 2em;">{{item.remark}}</div>
+            <img style=" width: 100%; max-height: 100%;"   width="100%" src="{{item.url}}" (click)="openUrl(item.url)" />
+          
+            <!-- <img style="position:absolute;top:50%;transform:translateY(-50%);max-height: 100%;"  width="100%" src="{{item.value}}" (click)="openUrl(item.value)" /> -->
+        </div>
+    </nz-carousel>
+
+    <nz-divider></nz-divider>
+    <div class="ant-descriptions-title" style="font-weight:bold;">相关视频</div>
+    <nz-carousel [nzEffect]="effect">
+        <div nz-carousel-content *ngFor="let item of drawerMsg.videoArr;index as i;">
+            <div style="position:absolute; background-color: #0000003b; top: 0; color: #ffffff; width: 100%; max-height: 2em;">{{item.remark}}</div>
+            <video style=" width: 100%; max-height: 100%;"  src="{{item.url}}" controls="controls">
+                浏览器不支持的视频
+                </video>
+        </div>
+    </nz-carousel>
+
+    <nz-divider></nz-divider>
+
+
+</nz-drawer>

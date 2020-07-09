@@ -29,3 +29,26 @@ ul {
     -ms-user-select: none;
     user-select: none;
 }
+
+::ng-deep [nz-carousel-content] {
+    text-align: center;
+   
+    background: black;
+    color: red;
+    overflow: hidden;
+    display: flex;
+    align-items: center
+}
+
+::ng-deep .ant-drawer-right{
+    width: auto !important;
+}
+
+
+::ng-deep nz-carousel {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 300px;
+}
