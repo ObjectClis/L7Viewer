@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
-    "@antv/l7": "^2.2.16",
+    "@antv/l7": "^2.17.3",
     "@antv/l7-maps": "^2.2.16",
     "geotiff": "^1.0.0-beta.10",
     "ng-zorro-antd": "^9.1.2",
